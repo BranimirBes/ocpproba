@@ -13,8 +13,10 @@ proxy.on('proxyReq', function (proxyReq, req, res, options) {
   proxyReq.setHeader('Host', reqHost);
 
   let reqReferer = req.headers.referer
-  reqReferer = reqReferer.replace("bosocp.xyz", "apps-crc.testing")
-  proxyReq.setHeader('Referer', reqReferer);
+  if (reqReferer && typeof reqReferer === "string") {
+    reqReferer = reqReferer.replace("bosocp.xyz", "apps-crc.testing")
+    proxyReq.setHeader('Referer', reqReferer);
+  }
 });
 
 proxy.on('proxyRes', function (proxyRes, req, res) {
