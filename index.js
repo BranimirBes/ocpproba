@@ -19,8 +19,10 @@ proxy.on('proxyReq', function (proxyReq, req, res, options) {
 
 proxy.on('proxyRes', function (proxyRes, req, res) {
   let locationHeader = proxyRes.headers['location']
-  locationHeader = locationHeader.replace("apps-crc.testing", "bosocp.xyz")
-  proxyRes.headers['location'] = locationHeader;
+  if (locationHeader && typeof locationHeader === "string") {
+    locationHeader = locationHeader.replace("apps-crc.testing", "bosocp.xyz")
+    proxyRes.headers['location'] = locationHeader;
+  }
 });
 
 proxy.on('upgrade', function (req, socket, head) {
