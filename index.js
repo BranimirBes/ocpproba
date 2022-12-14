@@ -7,15 +7,27 @@ let proxy = httpProxy.createServer({
   secure: false
 })
 
+function replaceRequestHost(stringValue) {
+  stringValue = stringValue.replace("bosocp.xyz", "apps-crc.testing")
+  stringValue = stringValue.replace("http", "https")
+  return stringValue
+}
+
 proxy.on('proxyReq', function (proxyReq, req, res, options) {
   let reqHost = req.headers.host
-  reqHost = reqHost.replace("bosocp.xyz", "apps-crc.testing")
+  reqHost = replaceRequestHost(reqHost)
   proxyReq.setHeader('Host', reqHost);
 
   let reqReferer = req.headers.referer
   if (reqReferer && typeof reqReferer === "string") {
-    reqReferer = reqReferer.replace("bosocp.xyz", "apps-crc.testing")
+    reqReferer = replaceRequestHost(reqReferer)
     proxyReq.setHeader('Referer', reqReferer);
+  }
+
+  let reqOrigin = req.headers.origin;
+  if (reqOrigin && typeof reqOrigin === "string") {
+    reqOrigin = replaceRequestHost(reqOrigin)
+    proxyReq.setHeader('Origin', reqOrigin);
   }
 });
 
@@ -23,6 +35,7 @@ proxy.on('proxyRes', function (proxyRes, req, res) {
   let locationHeader = proxyRes.headers['location']
   if (locationHeader && typeof locationHeader === "string") {
     locationHeader = locationHeader.replace("apps-crc.testing", "bosocp.xyz")
+    locationHeader = locationHeader.replace("https", "http")
     proxyRes.headers['location'] = locationHeader;
   }
 });
