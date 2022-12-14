@@ -3,7 +3,8 @@ let https = require('https');
 
 let proxy = httpProxy.createServer({
   target: "https://localhost:5075",
-  agent: https.globalAgent
+  agent: https.globalAgent,
+  secure: false
 })
 
 proxy.on('proxyReq', function (proxyReq, req, res, options) {
