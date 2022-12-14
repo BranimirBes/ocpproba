@@ -1,11 +1,9 @@
 let httpProxy = require('http-proxy');
-//let http = require('http')
+let https = require('https')
 
 let proxy = httpProxy.createServer({
-  target: {
-    host: 'localhost',
-    port: 4075,
-  },
+  target: 'https://localhost:4075',
+  agent  : https.globalAgent,
   secure: false,
 })
 
@@ -33,10 +31,10 @@ console.log("listening on port 8888")
 proxy.listen(8888);
 
 /*
+let http = require('http')
 http.createServer(function (req, res) {
   res.setHeader("Location", "apps-crc.testing")
   res.write('Hello World!'); //write a response to the client
   //res.setHeader("Location", "apps-crc.testing")
   res.end(); //end the response
-}).listen(4075); //the server object listens on port 8080
-*/
+}).listen(4075); //the server object listens on port 8080 */
