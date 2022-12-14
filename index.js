@@ -1,11 +1,9 @@
-let http = require('http'),
-    httpProxy = require('http-proxy');
+let httpProxy = require('http-proxy');
 
-// https://console-openshift-console.apps-crc.testing
 let proxy = new httpProxy.createProxyServer({
   target: {
     host: 'localhost',
-    port: 8080,
+    port: 4075,
     secure: false
   }
 });
