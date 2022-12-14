@@ -2,10 +2,7 @@ let httpProxy = require('http-proxy');
 let https = require('https');
 
 let proxy = httpProxy.createServer({
-  target: {
-    host: 'localhost',
-    port: 5075
-  },
+  target: "https://localhost:5075",
   agent: https.globalAgent
 })
 
