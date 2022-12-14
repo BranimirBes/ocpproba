@@ -1,10 +1,13 @@
 let httpProxy = require('http-proxy');
-let https = require('https')
+let path = require('path')
+let fs = require('fs')
 
 let proxy = httpProxy.createServer({
   target: 'https://localhost:4075',
-  agent  : https.globalAgent,
-  secure: false,
+  ssl: {
+    key:fs.readFileSync(path.join(__dirname,'./certs/key.pem')),
+    cert:fs.readFileSync(path.join(__dirname,'./certs/cert.pem'))
+  }
 })
 
 proxy.on('proxyReq', function(proxyReq, req, res, options) {
