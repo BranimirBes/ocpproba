@@ -3,14 +3,17 @@ let path = require('path')
 let fs = require('fs')
 
 let proxy = httpProxy.createServer({
-  target: 'https://localhost:5075',
+  target: {
+    host: 'localhost',
+    port: 5075
+  },
   ssl: {
-    key:fs.readFileSync(path.join(__dirname,'./cert/key.pem')),
-    cert:fs.readFileSync(path.join(__dirname,'./cert/cert.pem'))
+    key: fs.readFileSync(path.join(__dirname, './cert/key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, './cert/cert.pem'))
   }
 })
 
-proxy.on('proxyReq', function(proxyReq, req, res, options) {
+proxy.on('proxyReq', function (proxyReq, req, res, options) {
   let reqHost = req.headers.host
   reqHost = reqHost.replace("bosocp.xyz", "apps-crc.testing")
   proxyReq.setHeader('Host', reqHost);
@@ -29,7 +32,7 @@ proxy.on('proxyRes', function (proxyRes, req, res) {
 proxy.on('upgrade', function (req, socket, head) {
   proxy.ws(req, socket, head);
 });
- 
+
 console.log("listening on port 8888")
 proxy.listen(8888);
 
