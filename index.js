@@ -32,7 +32,7 @@ proxy.on('upgrade', function (req, socket, head) {
 });
 
 console.log("listening on port 8888")
-proxy.listen(8888);
+proxy.listen(80);
 
 /*
 let http = require('http')
